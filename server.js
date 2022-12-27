@@ -6,6 +6,10 @@ const app = express();
 const initDB = require("./config/db.js");
 const admin = require("./routes/admin.js");
 
+
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
 initDB();
 
 const Category = require("./models/category.js");
