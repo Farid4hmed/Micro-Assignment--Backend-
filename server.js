@@ -3,30 +3,26 @@ dotenv.config();
 const express = require("express");
 const { default: mongoose } = require("mongoose");
 const app = express();
-const initDatabase = require("./config/db.js");
+const initDB = require("./config/db.js");
+const admin = require("./routes/admin.js");
 
-initDatabase();
+initDB();
 
-//Schemas for Category and image
-const galleryCategory = new mongoose.Schema(
-   { name:{type:String, required:true}},
-    {timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" }}
-);
-const imagesGallery = new mongoose.Schema(
-    { name: {
-            type: String,
-            required: true,
-        },
-        category: { type: Array, required: true },
-        likes: { type: Number, default: 0 },
-        imageUrl: { type: String, required: true },
-    },
-    { timestamps: { createdAt: "createdAt", updatedAt: "updatedAt" } }
-);
+const Category = require("./models/category.js");
+const Image = require("./models/gallery.js");
 
-//models
-const Category = mongoose.model("Category", galleryCategory);
-const Image = mongoose.model("Image", imagesGallery);
+app.get("/api/health", (req, res) => {
+    res.send({
+        time: new Date(),
+        server: "Shuffle Backend",
+        status: "Active",
+    });
+});
+
+
+app.use("/api/admin", admin);
+
+
 
 
 
