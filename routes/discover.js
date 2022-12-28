@@ -22,10 +22,11 @@ route.get("/getCategories", (req, res, next) => {
     }
 });
 
-//get 4 images from a category && filter images
-route.get("/:category", async (req, res, next) => {
+//get 4 images from a category && filter images && shuffle images
+route.get("/:category/:shuffle", async (req, res, next) => {
     try {
         const category = req.params.category;
+        const shuffle = req.params.shuffle;
         const sortByDate = req.query.sortByDate;
         const filterByLike = req.query.filterByLike;
 
@@ -33,15 +34,17 @@ route.get("/:category", async (req, res, next) => {
             res.status(400).send("Bad Request");
         }
 
+        let shuffleInt = parseInt(shuffle) || 0;
         let set = 1;
         if(sortByDate){
-            if(sortByDate === "desc")set = -1;
+            if(sortByDate == "desc")set = -1;
         }
 
-        let likes = -1;
-        if(filterByLike > 0)likes = 0;
-
-        const images = await Image.find({category: { $in: [category] }, likes: { $gt : likes } }).sort({createdAt: set}).limit(4);
+        let likes = 0;
+        if(filterByLike){
+            if(filterByLike == 1)likes = 1;
+        }
+        const images = await Image.find({category: { $in: [category] }, likes: { $gte: likes }}).skip(shuffleInt).sort({ createdAt: set}).limit(4);
         res.json(images);
 
     } catch (error) {
