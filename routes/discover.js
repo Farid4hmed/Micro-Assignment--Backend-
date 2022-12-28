@@ -22,5 +22,22 @@ route.get("/getCategories", (req, res, next) => {
     }
 });
 
+//get 4 images from a category
+route.get("/:category", async (req, res, next) => {
+    try {
+        const category = req.params.category;
+
+        if (!category) {
+            res.status(400).send("Bad Request");
+        }
+        const images = await Image.find({category: { $in: [category] }}).limit(4);
+        res.json(images);
+
+    } catch (error) {
+        console.log(error);
+        next(error);
+    }
+});
+
 
 module.exports = route;
