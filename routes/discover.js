@@ -22,6 +22,27 @@ route.get("/getCategories", (req, res, next) => {
     }
 });
 
+route.get("/fav/:imgName", async (req, res, next) => {
+    try{
+        const imageName = req.params.imgName;
+
+        const image = await Image.findOne( { name : imageName } );
+        let like = 0;
+       if(image){
+        if(image.likes){like = 0;}
+        else {like = 1;}
+       }
+
+       await Image.updateOne({name: imageName}, { $set: {likes: like}});
+
+       res.send("done");
+
+    } catch(err){
+        console.log(err);
+        next(err);
+    }
+});
+
 //get 4 images from a category && filter images && shuffle images
 route.get("/:category/:shuffle", async (req, res, next) => {
     try {
@@ -52,6 +73,8 @@ route.get("/:category/:shuffle", async (req, res, next) => {
         next(error);
     }
 });
+
+
 
 
 module.exports = route;
