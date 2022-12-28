@@ -22,15 +22,26 @@ route.get("/getCategories", (req, res, next) => {
     }
 });
 
-//get 4 images from a category
+//get 4 images from a category && filter images
 route.get("/:category", async (req, res, next) => {
     try {
         const category = req.params.category;
+        const sortByDate = req.query.sortByDate;
+        const filterByLike = req.query.filterByLike;
 
         if (!category) {
             res.status(400).send("Bad Request");
         }
-        const images = await Image.find({category: { $in: [category] }}).limit(4);
+
+        let set = 1;
+        if(sortByDate){
+            if(sortByDate === "desc")set = -1;
+        }
+
+        let likes = -1;
+        if(filterByLike > 0)likes = 0;
+
+        const images = await Image.find({category: { $in: [category] }, likes: { $gt : likes } }).sort({createdAt: set}).limit(4);
         res.json(images);
 
     } catch (error) {
