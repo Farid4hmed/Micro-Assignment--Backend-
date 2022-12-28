@@ -5,6 +5,7 @@ const { default: mongoose } = require("mongoose");
 const app = express();
 const initDB = require("./config/db.js");
 const admin = require("./routes/admin.js");
+const discover = require("./routes/discover.js");
 
 
 app.use(express.json());
@@ -27,7 +28,7 @@ app.get("/api/health", (req, res) => {
 
 
 app.use("/api/admin", admin);
-
+app.use("/api/discover", discover);
 
 
 
@@ -38,12 +39,12 @@ app.use("/api/admin", admin);
 
 // route not found middleware
 app.use((req, res, next) =>
-    res.status(404).send("You are looking for something that we not have!")
+    res.status(404).send("You are looking for something that we do not have!")
 );
 
 //error handler middleware
 app.use((err, req, res, next) => {
-    res.status(500).send("Something went wrong!");
+    res.status(500).send("Something went wrong! Please try after some time.");
 });
 
 

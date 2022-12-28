@@ -5,8 +5,8 @@ const Category = require("../models/category.js");
 const Image = require("../models/gallery.js");
 
 const express = require("express");
-const gallery = require("../models/gallery.js");
 const app = express();
+
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
@@ -50,6 +50,5 @@ route.post("/addImage", async (req, res, next) => {
         next(err);
     }
 })
-
 
 module.exports = route;
