@@ -15,6 +15,8 @@ initDB();
 const Category = require("./models/category.js");
 const Image = require("./models/gallery.js");
 
+
+//Health API
 app.get("/api/health", (req, res) => {
     res.send({
         time: new Date(),
@@ -34,16 +36,27 @@ app.use("/api/admin", admin);
 
 
 
+//Error Handler Middleware
+app.use((req, res, next) => {
+    const err = new Error("Not found");
+    err.status = 404;
+    next(err);
+});
+app.use((err, req, res, next) => {
+    res.status(err.status || 500);
+    res.send({
+        error: {
+            status: err.status || 500,
+            message: err.message
+        }
+    });
+});
 
 
 
-
+//Port Connection
 const port = process.env.PORT || 3000;
 const host = process.env.HOST || "localhost";
-
-app.use((req, res) => {
-    res.status(404).send("You are looking for something that we do not have.");
-})
 
 app.listen(port, function(req, res){
     console.log(`Express server is up and running at http://${host}:${port}`);
