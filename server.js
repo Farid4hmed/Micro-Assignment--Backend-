@@ -1,8 +1,10 @@
 const dotenv = require("dotenv");
 dotenv.config();
 const express = require("express");
+
 const { default: mongoose } = require("mongoose");
 const app = express();
+const cors = require("cors");
 const initDB = require("./config/db.js");
 const admin = require("./routes/admin.js");
 const discover = require("./routes/discover.js");
@@ -10,6 +12,8 @@ const discover = require("./routes/discover.js");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+
+app.use(cors());
 
 initDB();
 

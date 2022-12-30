@@ -74,7 +74,4 @@ route.get("/:category/:shuffle", async (req, res, next) => {
     }
 });
 
-
-
-
 module.exports = route;
