@@ -26,14 +26,14 @@ route.get("/fav/:imgName", async (req, res, next) => {
     try{
         const imageName = req.params.imgName;
 
-        const image = await Image.findOne( { name : imageName } );
+        const image = await Image.find( { name : imageName } );
         let like = 0;
        if(image){
         if(image.likes){like = 0;}
         else {like = 1;}
        }
 
-       await Image.updateOne({name: imageName}, { $set: {likes: like}});
+       await Image.updateMany({name: imageName}, { $set: {likes: like}});
 
        res.send("done");
 
@@ -44,10 +44,10 @@ route.get("/fav/:imgName", async (req, res, next) => {
 });
 
 //get 4 images from a category && filter images && shuffle images
-route.get("/:category/:shuffle", async (req, res, next) => {
+route.get("/:category", async (req, res, next) => {
     try {
         const category = req.params.category;
-        const shuffle = req.params.shuffle;
+        const shuffle = req.query.shuffle;
         const sortByDate = req.query.sortByDate;
         const filterByLike = req.query.filterByLike;
 
