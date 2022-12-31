@@ -26,7 +26,7 @@ route.get("/fav/:imgID", async (req, res, next) => {
    try{
         const imageID = req.params.imgID;
 
-        const image = await Image.find( { _id : imageID } );
+        const image = await Image.findOne( { _id : imageID } );
         let like = 0;
        if(image){
         if(image.likes){like = 0;}
