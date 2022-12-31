@@ -33,7 +33,7 @@ route.get("/fav/:imgName", async (req, res, next) => {
         else {like = 1;}
        }
 
-       await Image.updateMany({name: imageName}, { $set: {likes: like}});
+       await Image.update({name: imageName}, { $set: {likes: like}});
 
        res.send("done");
 
