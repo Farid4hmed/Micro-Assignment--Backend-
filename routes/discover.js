@@ -22,18 +22,18 @@ route.get("/getCategories", (req, res, next) => {
     }
 });
 
-route.get("/fav/:imgName", async (req, res, next) => {
-    try{
-        const imageName = req.params.imgName;
+route.get("/fav/:imgID", async (req, res, next) => {
+   try{
+        const imageID = req.params.imgID;
 
-        const image = await Image.find( { name : imageName } );
+        const image = await Image.find( { _id : imageID } );
         let like = 0;
        if(image){
         if(image.likes){like = 0;}
         else {like = 1;}
        }
 
-       await Image.update({name: imageName}, { $set: {likes: like}});
+       await Image.updateOne({_id: imageID}, { $set: {likes: like}});
 
        res.send("done");
 
